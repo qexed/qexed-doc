@@ -18,6 +18,62 @@ const Index = () => {
   const [serverStatus, setServerStatus] = useState('loading');
   const [recentUpdates, setRecentUpdates] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  // 添加状态管理性能指标数据
+  const [performanceStats, setPerformanceStats] = useState([
+    { label: '区块加载速度', value: '-114514.1918x', desc: '比原版快' },
+    { label: '内存使用', value: '+91%', desc: '相比 Paper' },
+    { label: '启动时间', value: '2026h', desc: '从启动到可连接' },
+    { label: '网络延迟', value: '+404%', desc: '延迟优化' }
+  ]);
+  // 辅助函数：根据索引获取图标
+  const getStatIcon = (index) => {
+    const icons = ['⚡', '💾', '🚀', '🌐'];
+    return icons[index] || '📊';
+  };
+
+  // 辅助函数：根据索引获取颜色
+  const getStatColor = (index, opacity = 0.2) => {
+    const colors = ['#F59E0B', '#10B981', '#3B82F6', '#8B5CF6'];
+    const color = colors[index] || '#6B7280';
+    return opacity < 1 ? `${color}${Math.round(opacity * 255).toString(16).padStart(2, '0')}` : color;
+  };
+  // 从 GitHub 获取性能指标数据
+  const fetchPerformanceStats = async () => {
+    try {
+      // 从 v4 分支的 assets/test_data.json 获取数据
+      const response = await fetch('https://raw.githubusercontent.com/qexed/Qexed/v4/assets/test_data.json');
+
+      if (!response.ok) {
+        throw new Error(`HTTP 错误! 状态码: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // 假设 JSON 结构中有 performance_stats 字段
+      if (data.performance_stats && Array.isArray(data.performance_stats)) {
+        setPerformanceStats(data.performance_stats);
+      } else if (Array.isArray(data)) {
+        // 如果返回的是数组格式
+        setPerformanceStats(data);
+      } else {
+        console.warn('未找到预期的性能指标数据格式，使用默认数据');
+      }
+
+    } catch (error) {
+      console.error('获取性能指标数据失败:', error);
+      console.log('使用默认性能指标数据');
+
+      // 使用默认数据作为后备
+      const defaultStats = [
+        { label: '区块加载速度', value: '2.3x', desc: '比原版快' },
+        { label: '内存使用', value: '-60%', desc: '相比 Paper' },
+        { label: '启动时间', value: '5s', desc: '从启动到可连接' },
+        { label: '网络延迟', value: '-40%', desc: '延迟优化' }
+      ];
+      setPerformanceStats(defaultStats);
+    }
+  };
+
 
   // 从 mc_server.mcppl.com 获取服务器状态
   // 从 Minecraft 服务器获取真实状态（使用 Server List Ping 协议）
@@ -121,24 +177,34 @@ const Index = () => {
       const updates = commits.map(commit => ({
         version: `v${commit.sha.substring(0, 7)}`,
         date: new Date(commit.commit.author.date).toISOString().split('T')[0],
-        description: commit.commit.message.split('\n')[0] // 取提交信息的第一行
+        description: commit.commit.message.split('\n')[0], // 取提交信息的第一行
+        commitUrl: commit.html_url, // 添加提交链接
+        sha: commit.sha // 添加完整的提交哈希
       }));
 
       setRecentUpdates(updates);
     } catch (error) {
       console.error('获取GitHub提交记录失败:', error);
-      // 使用模拟数据作为备选
+      // 使用模拟数据作为备选，也包含链接
       setRecentUpdates([
-        { version: 'v901fb87', date: '2026-01-09', description: '同步v4:Qexed_Task' },
+        {
+          version: 'v901fb87',
+          date: '2026-01-09',
+          description: '同步v4:Qexed_Task',
+          commitUrl: 'https://github.com/qexed/Qexed/commit/901fb87',
+          sha: '901fb87'
+        },
       ]);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // 在 useEffect 中添加调用
   useEffect(() => {
     fetchServerStatus();
     fetchGitHubCommits();
+    fetchPerformanceStats(); // 新增：获取性能指标数据
 
     // 每30秒更新一次服务器状态
     const interval = setInterval(fetchServerStatus, 30000);
@@ -469,59 +535,144 @@ $ tail -f server.log
           </div>
         </Container>
       </section>
-
       {/* Recent Updates & Stats */}
       <section className="updates-section py-5 bg-dark text-light">
         <Container>
           <Row className="g-4">
             <Col lg={8}>
-              <Card className="border-0 bg-dark-light h-100" style={{ border: '1px solid #374151' }}>
+              <Card className="border-0 bg-dark-light h-100" style={{
+                border: '1px solid #374151',
+                borderRadius: '10px'
+              }}>
                 <Card.Body className="p-4">
-                  <h4 className="mb-4 text-light">
-                    <Globe className="me-2" />
-                    近期更新（当前v4分支）
-                    {isLoading && <Badge bg="secondary" className="ms-2">加载中...</Badge>}
-                  </h4>
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h4 className="mb-0 text-light d-flex align-items-center">
+                      <Globe className="me-2" />
+                      近期更新（当前v4分支）
+                      {isLoading && <Badge bg="secondary" className="ms-2">加载中...</Badge>}
+                    </h4>
+                    <Badge bg="success" className="px-3 py-2">
+                      <i className="bi bi-git me-1"></i> v4
+                    </Badge>
+                  </div>
+
                   <ListGroup variant="flush" className="bg-transparent">
                     {recentUpdates.map((update, index) => (
                       <ListGroup.Item
                         key={index}
-                        className="bg-transparent text-light border-secondary"
+                        className="bg-transparent text-light border-secondary update-item"
+                        style={{
+                          borderBottom: '1px solid #374151',
+                          padding: '16px 0',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onClick={() => window.open(update.commitUrl, '_blank')}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#1F2937';
+                          e.currentTarget.style.transform = 'translateX(5px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.transform = 'translateX(0)';
+                        }}
                       >
-                        <div className="d-flex justify-content-between align-items-center mb-2">
-                          <Badge bg="primary" className="px-3">{update.version}</Badge>
-                          <small className="text-muted">{update.date}</small>
+                        <div className="d-flex align-items-start">
+                          <div className="flex-grow-1">
+                            <div className="d-flex justify-content-between align-items-center mb-2">
+                              <div className="d-flex align-items-center gap-2">
+                                <code className="text-info bg-dark p-1 rounded">{update.version}</code>
+                                {update.branch && (
+                                  <Badge bg="dark" text="light" className="border border-secondary">
+                                    {update.branch}
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="d-flex align-items-center">
+                                <small className="text-muted me-2">{update.date}</small>
+                                <i className="bi bi-box-arrow-up-right text-muted"></i>
+                              </div>
+                            </div>
+                            <p className="mb-0 text-light" style={{ lineHeight: 1.5 }}>
+                              {update.description}
+                            </p>
+                            {update.sha && (
+                              <small className="text-muted d-block mt-1">
+                                提交: {update.sha.substring(0, 7)}
+                              </small>
+                            )}
+                          </div>
                         </div>
-                        <p className="mb-0 text-muted">{update.description}</p>
                       </ListGroup.Item>
                     ))}
                   </ListGroup>
+
+                  {/* 查看所有提交的按钮 */}
+                  <div className="text-center mt-4">
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      href="https://github.com/qexed/Qexed/tree/v4"
+                      target="_blank"
+                      className="d-inline-flex align-items-center"
+                    >
+                      <Github className="me-2" />
+                      查看完整提交历史
+                      <i className="bi bi-arrow-right ms-2"></i>
+                    </Button>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
 
             <Col lg={4}>
-              <Card className="border-0 bg-dark-light h-100" style={{ border: '1px solid #374151' }}>
+              <Card className="border-0 bg-dark-light h-100" style={{
+                border: '1px solid #374151',
+                borderRadius: '10px'
+              }}>
                 <Card.Body className="p-4">
-                  <h4 className="mb-4 text-light">
+                  <h4 className="mb-4 text-light d-flex align-items-center">
                     <Award className="me-2" />
                     性能指标
                   </h4>
                   <div className="performance-stats">
-                    {[
-                      { label: '区块加载速度', value: '2.3x', desc: '比原版快' },
-                      { label: '内存使用', value: '-60%', desc: '相比 Paper' },
-                      { label: '启动时间', value: '5s', desc: '从启动到可连接' },
-                      { label: '网络延迟', value: '-40%', desc: '延迟优化' }
-                    ].map((stat, idx) => (
-                      <div key={idx} className="performance-stat mb-3">
-                        <div className="d-flex justify-content-between align-items-center mb-1">
-                          <span className="text-muted">{stat.label}</span>
-                          <span className="text-success fw-bold">{stat.value}</span>
+                    {performanceStats.map((stat, idx) => (
+                      <div key={idx} className="performance-stat mb-4 p-3 rounded"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%)',
+                          border: '1px solid rgba(55, 65, 81, 0.5)'
+                        }}>
+                        <div className="d-flex align-items-center mb-2">
+                          <div className="stat-icon me-3 rounded-circle d-flex align-items-center justify-content-center"
+                            style={{
+                              width: '40px',
+                              height: '40px',
+                              background: getStatColor(idx),
+                              border: `1px solid ${getStatColor(idx, 0.4)}`,
+                              fontSize: '20px'
+                            }}>
+                            {getStatIcon(idx)}
+                          </div>
+                          <div className="flex-grow-1">
+                            <div className="d-flex justify-content-between align-items-center mb-1">
+                              <span className="text-muted">{stat.label}</span>
+                              <span className="text-success fw-bold" style={{ fontSize: '1.25rem' }}>
+                                {stat.value}
+                              </span>
+                            </div>
+                            <small className="text-muted">{stat.desc}</small>
+                          </div>
                         </div>
-                        <small className="text-muted">{stat.desc}</small>
                       </div>
                     ))}
+                  </div>
+
+                  {/* 显示数据来源信息 */}
+                  <div className="text-end mt-3">
+                    <small className="text-muted">
+                      <i className="bi bi-github me-1"></i>
+                      数据来源: assets/test_data.json
+                    </small>
                   </div>
                 </Card.Body>
               </Card>
