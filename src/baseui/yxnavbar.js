@@ -3,21 +3,18 @@ import {
   Container,
   Nav,
   Navbar,
-
 } from 'react-bootstrap';
-import { 
-  Github, 
-  House, 
-  Book, 
-  Person, 
+import {
+  Github,
+  House,
+  Book,
+  Person,
   Shield,
-
 } from 'react-bootstrap-icons';
 
 const YXNavbar = ({ theme, onThemeToggle }) => (
-  <Navbar 
-    sticky="top" 
-    expand="lg" 
+  <Navbar
+    expand="lg"
     className={`navbar-custom navbar-dark`}
     style={{
       backgroundColor: '#0f172a',
@@ -25,30 +22,29 @@ const YXNavbar = ({ theme, onThemeToggle }) => (
     }}
   >
     <Container>
-      <Navbar.Brand 
-        href="https://www.qexed.com" 
+      <Navbar.Brand
+        href="https://www.qexed.com"
         className="d-flex align-items-center"
-        style={{ 
+        style={{
           color: '#f1f5f9',
           fontWeight: '600'
         }}
       >
-        
         Qexed 文档(开发中)
       </Navbar.Brand>
-      
-      <Navbar.Toggle 
-        aria-controls="basic-navbar-nav" 
+
+      <Navbar.Toggle
+        aria-controls="basic-navbar-nav"
         style={{
           borderColor: '#475569'
         }}
       />
-      
+
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
-          <Nav.Link 
+          <Nav.Link
             href="https://www.qexed.com"
-            style={{ 
+            style={{
               color: '#e2e8f0'
             }}
             className="d-flex align-items-center"
@@ -56,12 +52,12 @@ const YXNavbar = ({ theme, onThemeToggle }) => (
             <House className="me-1" size={16} />
             首页
           </Nav.Link>
-          
-          <Nav.Link 
+
+          <Nav.Link
             href="https://github.com/qexed/Qexed"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ 
+            style={{
               color: '#e2e8f0'
             }}
             className="d-flex align-items-center"
@@ -69,10 +65,10 @@ const YXNavbar = ({ theme, onThemeToggle }) => (
             <Github className="me-1" size={16} />
             开源地址
           </Nav.Link>
-          
-          <Nav.Link 
+
+          <Nav.Link
             href="https://doc.qexed.com"
-            style={{ 
+            style={{
               color: '#e2e8f0'
             }}
             className="d-flex align-items-center"
@@ -80,10 +76,10 @@ const YXNavbar = ({ theme, onThemeToggle }) => (
             <Book className="me-1" size={16} />
             文档
           </Nav.Link>
-          
-          <Nav.Link 
+
+          <Nav.Link
             href="https://uc.qexed.com"
-            style={{ 
+            style={{
               color: '#e2e8f0'
             }}
             className="d-flex align-items-center"
@@ -91,10 +87,10 @@ const YXNavbar = ({ theme, onThemeToggle }) => (
             <Person className="me-1" size={16} />
             用户中心
           </Nav.Link>
-          
-          <Nav.Link 
+
+          <Nav.Link
             href="https://permission.qexed.com"
-            style={{ 
+            style={{
               color: '#e2e8f0'
             }}
             className="d-flex align-items-center"
@@ -102,9 +98,7 @@ const YXNavbar = ({ theme, onThemeToggle }) => (
             <Shield className="me-1" size={16} />
             权限管理
           </Nav.Link>
-          
         </Nav>
-
       </Navbar.Collapse>
     </Container>
   </Navbar>

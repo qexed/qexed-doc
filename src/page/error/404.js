@@ -2,13 +2,17 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 
 
 const Page404 = () => (
-  <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: 'calc(100vh - 160px)' }}>
+  <Container className="d-flex align-items-center justify-content-center" style={{
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+  }}>
     {/* 保持原有内容结构 */}
     <Card className="border-0 shadow-lg" style={{ maxWidth: '800px' }}>
       <Card.Body className="text-center p-5">
         <Row className="align-items-center">
           <Col md={6}>
-            <img 
+            <img
               src={`${process.env.PUBLIC_URL}/image/404.png`}
               alt="404 插图"
               className="img-fluid"
@@ -30,8 +34,8 @@ const Page404 = () => (
                 <br />
                 请检查 URL 或返回首页
               </p>
-              <a 
-                href="/" 
+              <a
+                href="/"
                 className="btn btn-primary px-5 py-3"
                 style={{ borderRadius: '2rem' }}
               >
