@@ -1,0 +1,36 @@
+name: Deploy React App to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  # 当向 main 分支推送代码时触发
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # 在最新的 Ubuntu 环境中运行
+
+    steps:
+      # 1. 获取代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'  # 建议指定与你开发环境一致的版本
+          cache: 'npm'        # 缓存 npm 依赖，加速后续构建
+
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: npm ci          # 使用 ci 命令安装，更严格、更快
+
+      # 4. 执行编译
+      - name: Build the project
+        run: npm run build   # 执行你的构建命令
+
+      # 5. 部署到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub 自动提供的令牌，无需手动设置
+          publish_dir: ./build  # 将 build 文件夹的内容部署出去
