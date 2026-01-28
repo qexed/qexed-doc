@@ -30,7 +30,7 @@ jobs:
 
       # 5. 部署到 GitHub Pages
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub 自动提供的令牌，无需手动设置
           publish_dir: ./build  # 将 build 文件夹的内容部署出去
