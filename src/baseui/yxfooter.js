@@ -1,13 +1,7 @@
 // baseui/yxfooter.jsx
 import { Container, Row, Col } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
 
 const YXFooter = ({ theme, style }) => {
-  const [currentYear, setCurrentYear] = useState('');
-  
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
 
   // 青绿色主题配色
   const cyanTheme = {
