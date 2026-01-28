@@ -3,7 +3,7 @@ import {
   Container,
   Nav,
   Navbar,
-  NavDropdown
+
 } from 'react-bootstrap';
 import { 
   Github, 
@@ -11,8 +11,7 @@ import {
   Book, 
   Person, 
   Shield,
-  Sun,
-  Moon
+
 } from 'react-bootstrap-icons';
 
 const YXNavbar = ({ theme, onThemeToggle }) => (

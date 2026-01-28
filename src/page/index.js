@@ -1,20 +1,20 @@
 // page/index.jsx
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Badge, Form, InputGroup, Spinner, ProgressBar, ListGroup } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Badge, ProgressBar, ListGroup } from 'react-bootstrap';
 import { 
-  Cpu, Server,  Shield, Code, Download, 
-  Github, Terminal, Plug,  Globe, 
-  Award, BarChart, CpuFill, Memory, Wifi//Users,Zap,
+  Cpu, Download, 
+  Github, Terminal, Globe, 
+  Award, BarChart, CpuFill,//Users,Zap,
 } from 'react-bootstrap-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import './index.css';
 
 const Index = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
+
   const [playerCount, setPlayerCount] = useState(0);
   const [tps, setTps] = useState(20.0);
-  const [serverStatus, setServerStatus] = useState('online');
+  const [serverStatus] = useState('online');
 
   // 模拟实时数据
   useEffect(() => {
