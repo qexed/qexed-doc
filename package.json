@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^14.6.1",
     "axios": "^1.13.3",
     "bootstrap": "^5.3.8",
+    "bootswatch": "^5.3.8",
     "jsencrypt": "^3.5.4",
     "react": "^19.2.3",
     "react-bootstrap": "^2.10.10",
@@ -45,7 +46,5 @@
   "devDependencies": {
     "react-scripts": "^5.0.1"
   },
-  "overrides": {
-
-  }
+  "overrides": {}
 }

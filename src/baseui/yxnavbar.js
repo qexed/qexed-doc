@@ -1,44 +1,114 @@
+import React from 'react';
 import {
   Container,
+  Nav,
+  Navbar,
+  NavDropdown
 } from 'react-bootstrap';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { 
+  Github, 
+  House, 
+  Book, 
+  Person, 
+  Shield,
+  Sun,
+  Moon
+} from 'react-bootstrap-icons';
 
-
-
-const YXNavbar = () => (
-  <Navbar sticky="top" expand="lg" className="bg-body-tertiary">
+const YXNavbar = ({ theme, onThemeToggle }) => (
+  <Navbar 
+    sticky="top" 
+    expand="lg" 
+    className={`navbar-custom navbar-dark`}
+    style={{
+      backgroundColor: '#0f172a',
+      borderBottom: '1px solid #334155'
+    }}
+  >
     <Container>
-      <Navbar.Brand href="https://www.qexed.com">
-        <img src={`${process.env.PUBLIC_URL}/favicon.ico`}
-          width="30"
-          height="30"
-          className="d-inline-block align-top" alt="logo" />
-          {' '}
-        Qexed 文档</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Brand 
+        href="https://www.qexed.com" 
+        className="d-flex align-items-center"
+        style={{ 
+          color: '#f1f5f9',
+          fontWeight: '600'
+        }}
+      >
+        
+        Qexed 文档(开发中)
+      </Navbar.Brand>
+      
+      <Navbar.Toggle 
+        aria-controls="basic-navbar-nav" 
+        style={{
+          borderColor: '#475569'
+        }}
+      />
+      
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
-          <Nav.Link href="/">首页</Nav.Link>
-          <Nav.Link href="https://doc.qexed.com">文档</Nav.Link>
-          <Nav.Link href="https://uc.qexed.com">用户中心</Nav.Link>
-          {/* <Nav.Link href="https://open.qexed.com">云行开放平台</Nav.Link> */}
-          {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              Another action
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">
-              Separated link
-            </NavDropdown.Item>
-          </NavDropdown>*/}
+          <Nav.Link 
+            href="https://www.qexed.com"
+            style={{ 
+              color: '#e2e8f0'
+            }}
+            className="d-flex align-items-center"
+          >
+            <House className="me-1" size={16} />
+            首页
+          </Nav.Link>
+          
+          <Nav.Link 
+            href="https://github.com/qexed/Qexed"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ 
+              color: '#e2e8f0'
+            }}
+            className="d-flex align-items-center"
+          >
+            <Github className="me-1" size={16} />
+            开源地址
+          </Nav.Link>
+          
+          <Nav.Link 
+            href="https://doc.qexed.com"
+            style={{ 
+              color: '#e2e8f0'
+            }}
+            className="d-flex align-items-center"
+          >
+            <Book className="me-1" size={16} />
+            文档
+          </Nav.Link>
+          
+          <Nav.Link 
+            href="https://uc.qexed.com"
+            style={{ 
+              color: '#e2e8f0'
+            }}
+            className="d-flex align-items-center"
+          >
+            <Person className="me-1" size={16} />
+            用户中心
+          </Nav.Link>
+          
+          <Nav.Link 
+            href="https://permission.qexed.com"
+            style={{ 
+              color: '#e2e8f0'
+            }}
+            className="d-flex align-items-center"
+          >
+            <Shield className="me-1" size={16} />
+            权限管理
+          </Nav.Link>
           
         </Nav>
+
       </Navbar.Collapse>
     </Container>
   </Navbar>
-
 );
+
 export default YXNavbar;

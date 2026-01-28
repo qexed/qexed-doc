@@ -1,34 +1,54 @@
-// App.js
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import YXNavbar from './baseui/yxnavbar';
-import YXFooter from './baseui/yxfooter';
-import Page404 from './page/error/404';
 import Index from './page/index';
-import Login from './page/login';
-import Reset from './page/reset';
-import Enroll from './page/enroll';
-import AuthorizationPage from './page/authorization';
-import UserAgreement from './page/user_agreement';
-import SummonCertificate from './page/summon_certificate';
-const App = () => (
-  <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
-    <YXNavbar style={{ height: '64px' }} />
+import Page404 from './page/error/404';
+import './App.css';
 
-    <main className="flex-grow-1">
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path='/summon-certificate' element={<SummonCertificate/>}/>
-        <Route path="/login" element={<Login/>} />
-        <Route path='/enroll' element={<Enroll/>}/>
-        <Route path="/reset" element={<Reset/>}/>
-        <Route path='/authorization' element={<AuthorizationPage/>}/>
-        <Route path='/user-agreement' element={<UserAgreement/>}/>
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </main>
+function App() {
+  const [theme, setTheme] = useState('dark');
 
-    <YXFooter style={{ height: '96px' }} />
-  </div>
+  // 从本地存储加载主题偏好
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('qexed-theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
 
-);
+  // 切换主题
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('qexed-theme', newTheme);
+    
+    // 更新文档根元素的主题属性
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
+  // 初始化主题
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  return (
+    <div className={`app ${theme === 'dark' ? 'app-dark' : 'app-light'}`}>
+      <YXNavbar theme={theme} onThemeToggle={toggleTheme} />
+      
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Index theme={theme} />} />
+          <Route path="*" element={<Page404 theme={theme} />} />
+        </Routes>
+      </main>
+      
+      <footer className="app-footer">
+        <div className="container">
+          <p>ICP备案:还在搞</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
 export default App;

@@ -1,0 +1,340 @@
+/* page/index.css */
+.minecraft-theme {
+  background: #0F172A;
+  color: #E2E8F0;
+  font-family: 'Segoe UI', 'Noto Sans', -apple-system, sans-serif;
+}
+
+.minecraft-homepage {
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.minecraft-hero {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+.grid-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(30, 41, 59, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.3;
+}
+
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 20%);
+  animation: particles-float 20s ease-in-out infinite alternate;
+}
+
+@keyframes particles-float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, 20px); }
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #2563EB 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  position: relative;
+  display: inline-block;
+}
+
+.text-gradient-primary::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #3B82F6, transparent);
+  border-radius: 2px;
+}
+
+.version-badge {
+  display: inline-block;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #10B981;
+  padding: 0.25rem 1rem;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-left: 1rem;
+  vertical-align: middle;
+  backdrop-filter: blur(10px);
+}
+
+.server-status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.server-status-indicator.online {
+  background: #10B981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Minecraft Terminal */
+.minecraft-terminal {
+  background: #1E1E1E;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid #374151;
+}
+
+.terminal-header {
+  background: #252526;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #3C3C3C;
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+  margin-right: 12px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red { background: #FF5F56; }
+.dot.yellow { background: #FFBD2E; }
+.dot.green { background: #27CA3F; }
+
+.terminal-title {
+  color: #CCCCCC;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.terminal-body {
+  padding: 20px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #D4D4D4;
+  min-height: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.terminal-body pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.terminal-body code {
+  font-family: inherit;
+  color: #D4D4D4;
+}
+
+/* Stats Card */
+.stats-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 116, 139, 0.3) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.minecraft-progress {
+  height: 8px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.minecraft-progress .progress-bar {
+  border-radius: 4px;
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* Buttons */
+.minecraft-btn {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.minecraft-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+.minecraft-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.minecraft-btn:hover::after {
+  left: 100%;
+}
+
+/* Code Snippet */
+.code-snippet {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 1rem;
+  font-family: 'SF Mono', Monaco, 'Cascadia Mono', monospace;
+  font-size: 0.875rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.code-snippet:hover {
+  border-color: #60A5FA;
+  box-shadow: 0 0 20px rgba(96, 165, 250, 0.1);
+}
+
+.code-snippet::before {
+  content: '$';
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  color: #60A5FA;
+  font-weight: bold;
+}
+
+.code-snippet code {
+  padding-left: 1.5rem;
+  display: block;
+}
+
+/* Features */
+.feature-card {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.feature-card:hover::before {
+  transform: translateX(100%);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  border-color: #3B82F6 !important;
+}
+
+/* Custom Scrollbar */
+.terminal-body::-webkit-scrollbar,
+.code-snippet::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-track,
+.code-snippet::-webkit-scrollbar-track {
+  background: #1E1E1E;
+}
+
+.terminal-body::-webkit-scrollbar-thumb,
+.code-snippet::-webkit-scrollbar-thumb {
+  background: #3C3C3C;
+  border-radius: 4px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover,
+.code-snippet::-webkit-scrollbar-thumb:hover {
+  background: #4F4F4F;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .minecraft-hero h1.display-3 {
+    font-size: 2.5rem;
+  }
+  
+  .version-badge {
+    display: block;
+    margin: 0.5rem 0 0 0;
+    width: fit-content;
+  }
+  
+  .terminal-body {
+    font-size: 0.75rem;
+  }
+}
+
+/* Performance Stats */
+.performance-stats {
+  display: grid;
+  gap: 1rem;
+}
+
+.performance-stat {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.performance-stat:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateX(5px);
+}
