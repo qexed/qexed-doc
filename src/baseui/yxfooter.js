@@ -41,7 +41,7 @@ const YXFooter = ({ theme, style }) => {
         {/*公安备案 */}
         <Col xs={12} md="auto" className="text-center">
           <a 
-            href="#"
+            href="https://beian.mps.gov.cn/#/query/webSearch?code=还没搞"
             className="icp-link text-decoration-none"
             style={{
               color: colors.primary,
@@ -58,6 +58,14 @@ const YXFooter = ({ theme, style }) => {
               e.target.style.color = colors.primary;
             }}
           >
+            <img
+              src={`${process.env.PUBLIC_URL}/image/gonganbeianico.png`}
+              alt="公安备案ico"
+              className="img-fluid"
+              style={{
+
+              }}
+            />
             公安备案: 还没搞
           </a>
         </Col>
