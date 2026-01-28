@@ -106,7 +106,7 @@ graph TD
     end
 ```
 ## 配置文件
-``` toml
+```toml
 version = 0
 tab = true
 game_stop_cmd = false

@@ -30,7 +30,7 @@ const YXNavbar = ({ theme, onThemeToggle }) => (
           fontWeight: '600'
         }}
       >
-        Qexed 文档(开发中)
+        Qexed 文档
       </Navbar.Brand>
 
       <Navbar.Toggle

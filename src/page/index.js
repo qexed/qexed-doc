@@ -548,7 +548,7 @@ $ tail -f server.log
                   <div className="d-flex justify-content-between align-items-center mb-4">
                     <h4 className="mb-0 text-light d-flex align-items-center">
                       <Globe className="me-2" />
-                      近期更新（当前v4分支）
+                      近期更新
                       {isLoading && <Badge bg="secondary" className="ms-2">加载中...</Badge>}
                     </h4>
                     <Badge bg="success" className="px-3 py-2">

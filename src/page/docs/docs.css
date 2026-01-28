@@ -106,13 +106,12 @@
 }
 
 .docs-article th {
-  background: var(--table-header-bg, #f8f9fa);
+  background: var(--table-header-bg, #533f4f);
   font-weight: 600;
-  color: var(--text-primary, #212529);
 }
 
 .docs-article tr:nth-child(even) {
-  background: var(--table-even-bg, #fdfdfd);
+  background: var(--table-even-bg, #52606e);
 }
 
 /* 代码样式 */

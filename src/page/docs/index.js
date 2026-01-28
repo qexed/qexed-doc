@@ -7,14 +7,14 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 // React Bootstrap 组件
-import { 
-  Container, 
-  Row, 
-  Col, 
-  Nav, 
-  Card, 
-  Form, 
-  InputGroup, 
+import {
+  Container,
+  Row,
+  Col,
+  Nav,
+  Card,
+  Form,
+  InputGroup,
   Badge,
   Spinner,
   Alert,
@@ -34,7 +34,7 @@ const CustomLink = ({ href, children, ...props }) => {
       </Link>
     );
   }
-  
+
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
       {children}
@@ -45,42 +45,42 @@ const CustomLink = ({ href, children, ...props }) => {
 // 自定义图片组件，处理相对路径
 const CustomImage = ({ src, alt, title, ...props }) => {
   const { '*': docPath } = useParams();
-  
+
   // 处理图片路径
   const processedSrc = useMemo(() => {
     if (!src) return '';
-    
+
     // 如果是绝对URL（http/https），直接返回
     if (src.startsWith('http://') || src.startsWith('https://')) {
       return src;
     }
-    
+
     // 如果是绝对路径（以/开头），添加PUBLIC_URL前缀
     if (src.startsWith('/')) {
       return `${process.env.PUBLIC_URL || ''}${src}`;
     }
-    
+
     // 相对路径：基于当前文档路径计算
     if (docPath) {
       // 获取当前文档所在目录
       const lastSlashIndex = docPath.lastIndexOf('/');
       const baseDir = lastSlashIndex >= 0 ? docPath.substring(0, lastSlashIndex + 1) : '';
-      
+
       // 处理常见的相对路径情况
       let resolvedPath = src;
-      
+
       // 处理 ../ 上级目录
       if (src.startsWith('../')) {
         // 计算上级目录
         const dirLevels = baseDir.split('/').filter(Boolean);
         let upCount = 0;
         let tempSrc = src;
-        
+
         while (tempSrc.startsWith('../')) {
           upCount++;
           tempSrc = tempSrc.substring(3);
         }
-        
+
         if (dirLevels.length >= upCount) {
           const newDir = dirLevels.slice(0, -upCount).join('/');
           resolvedPath = `${newDir ? newDir + '/' : ''}${tempSrc}`;
@@ -88,7 +88,7 @@ const CustomImage = ({ src, alt, title, ...props }) => {
           // 如果超出了根目录，就放在根目录
           resolvedPath = tempSrc;
         }
-      } 
+      }
       // 处理 ./ 当前目录
       else if (src.startsWith('./')) {
         resolvedPath = `${baseDir}${src.substring(2)}`;
@@ -97,21 +97,21 @@ const CustomImage = ({ src, alt, title, ...props }) => {
       else {
         resolvedPath = `${baseDir}${src}`;
       }
-      
+
       console.log(`图片路径处理: ${src} -> ${resolvedPath} (baseDir: ${baseDir})`);
-      
+
       // 返回完整路径
       return `${process.env.PUBLIC_URL || ''}/docs/${resolvedPath}`;
     }
-    
+
     // 如果没有文档路径，使用原始路径
     return `${process.env.PUBLIC_URL || ''}/docs/${src}`;
   }, [src, docPath]);
-  
+
   return (
-    <img 
-      src={processedSrc} 
-      alt={alt || ''} 
+    <img
+      src={processedSrc}
+      alt={alt || ''}
       title={title}
       style={{ maxWidth: '100%', height: 'auto' }}
       {...props}
@@ -129,18 +129,18 @@ const MermaidDiagram = ({ chart, theme = 'default' }) => {
   useEffect(() => {
     // 组件挂载时标记为已挂载
     isMounted.current = true;
-    
+
     const renderMermaid = async () => {
       if (!chart || !diagramRef.current) return;
-      
+
       try {
         // 动态导入 mermaid
         const mermaidModule = await import('mermaid');
         const mermaid = mermaidModule.default;
-        
+
         // 生成唯一 ID
         const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
-        
+
         // 配置 mermaid
         mermaid.initialize({
           startOnLoad: false,
@@ -151,10 +151,10 @@ const MermaidDiagram = ({ chart, theme = 'default' }) => {
           },
           securityLevel: 'loose'
         });
-        
+
         // 使用 mermaid.render 渲染 SVG
         const { svg } = await mermaid.render(id, chart);
-        
+
         if (isMounted.current) {
           setSvgContent(svg);
           setError(null);
@@ -166,15 +166,15 @@ const MermaidDiagram = ({ chart, theme = 'default' }) => {
         }
       }
     };
-    
+
     renderMermaid();
-    
+
     // 清理函数
     return () => {
       isMounted.current = false;
     };
   }, [chart, theme]);
-  
+
   if (error) {
     return (
       <Alert variant="warning" className="my-3">
@@ -185,7 +185,7 @@ const MermaidDiagram = ({ chart, theme = 'default' }) => {
       </Alert>
     );
   }
-  
+
   return (
     <div className="mermaid-diagram text-center my-4">
       <div ref={diagramRef}>
@@ -207,14 +207,14 @@ const MermaidDiagram = ({ chart, theme = 'default' }) => {
 // 导航项组件
 const NavItem = ({ item, currentDocPath, level = 0 }) => {
   const [isExpanded, setIsExpanded] = useState(level < 2);
-  
+
   const hasChildren = item.children && item.children.length > 0;
   const isActive = currentDocPath === item.path;
 
   const getIcon = () => {
     return '📂'
   };
-  
+
   return (
     <Nav.Item className={`mb-1 level-${level}`}>
       <div className="d-flex align-items-center">
@@ -234,12 +234,11 @@ const NavItem = ({ item, currentDocPath, level = 0 }) => {
         <Nav.Link
           as={Link}
           to={item.routePath}
-          className={`d-flex align-items-center justify-content-between text-decoration-none py-2 px-3 rounded ${
-            isActive 
-              ? 'bg-primary text-white' 
+          className={`d-flex align-items-center justify-content-between text-decoration-none py-2 px-3 rounded ${isActive
+              ? 'bg-primary text-white'
               : 'text-body bg-transparent'
-          }`}
-          style={{ 
+            }`}
+          style={{
             marginLeft: level > 0 ? `${level * 16}px` : '0',
             flex: 1
           }}
@@ -290,35 +289,35 @@ const Docs = ({ theme }) => {
       setFilteredNavigation(navigation);
       return;
     }
-    
+
     const searchResults = [];
     const searchLower = query.toLowerCase();
-    
+
     const searchInNode = (node) => {
       const nodeMatches = node.title.toLowerCase().includes(searchLower);
       let childrenMatches = [];
-      
+
       if (node.children && node.children.length > 0) {
         childrenMatches = node.children.map(searchInNode).filter(Boolean);
       }
-      
+
       if (nodeMatches || childrenMatches.length > 0) {
         return {
           ...node,
           children: childrenMatches.length > 0 ? childrenMatches : node.children
         };
       }
-      
+
       return null;
     };
-    
+
     navigation.forEach(section => {
       const filteredSection = searchInNode(section);
       if (filteredSection) {
         searchResults.push(filteredSection);
       }
     });
-    
+
     setFilteredNavigation(searchResults);
   };
 
@@ -334,7 +333,7 @@ const Docs = ({ theme }) => {
         }
       }
     };
-    
+
     initialize();
   }, [docPath, navigate]);
 
@@ -352,7 +351,7 @@ const Docs = ({ theme }) => {
         setNavLoading(false);
       }
     };
-    
+
     loadNavigation();
   }, []);
 
@@ -360,10 +359,10 @@ const Docs = ({ theme }) => {
   useEffect(() => {
     const loadDoc = async () => {
       if (!docPath) return;
-      
+
       setLoading(true);
       setError(null);
-      
+
       try {
         const markdownContent = await getDocContent(docPath);
         setContent(markdownContent);
@@ -374,38 +373,83 @@ const Docs = ({ theme }) => {
         setLoading(false);
       }
     };
-    
+
     if (docPath && !navLoading) {
       loadDoc();
     }
   }, [docPath, navLoading]);
 
-  // 代码和 mermaid 图表组件
-  const CodeBlock = ({ node, inline, className, children, ...props }) => {
-    const match = /language-(\w+)/.exec(className || '');
-    const language = match ? match[1] : '';
-    
-    if (!inline && language === 'mermaid') {
-      const codeString = String(children).replace(/\n$/, '');
-      return <MermaidDiagram chart={codeString} theme={theme} />;
-    }
-    
-    return !inline && language ? (
-      <SyntaxHighlighter
-        style={vscDarkPlus}
-        language={language}
-        PreTag="div"
-        {...props}
-      >
-        {String(children).replace(/\n$/, '')}
-      </SyntaxHighlighter>
-    ) : (
-      <code className={className} {...props}>
-        {children}
-      </code>
-    );
-  };
+const CodeBlock = ({ node, inline, className, children, ...props }) => {
+  const match = /language-(\w+)/.exec(className || '');
+  const language = match ? match[1] : '';
+  if (!language){
+    return <code className={className} {...props}>{children}</code>
+  }
 
+  // 其余代码保持不变...
+  if (!inline && language === 'mermaid') {
+    const codeString = String(children).replace(/\n$/, '');
+    return <MermaidDiagram chart={codeString} theme={theme} />;
+  }
+
+  if (inline) {
+    return <code className={className} {...props}>{children}</code>;
+  }
+
+  // 如果有 node.children 并且是 toml，使用更安全的提取方式
+  if (node?.type === 'code' && node.children) {
+    if (language === 'toml') {
+      // 从节点中提取原始文本
+      const rawText = node.children
+        .map(child => child.value || child)
+        .join('');
+      children = rawText;
+    }
+  }
+  const codeContent = typeof children === 'string' 
+    ? children 
+    : extractCodeText(children);
+
+  return (
+    <SyntaxHighlighter
+      style={vscDarkPlus}
+      language={language || 'text'}
+      PreTag="div"
+      className="code-block"
+      showLineNumbers={true}
+      wrapLines={true}
+      {...props}
+    >
+      {codeContent.replace(/\n$/, '')}
+    </SyntaxHighlighter>
+  );
+};
+const extractCodeText = (children) => {
+  if (typeof children === 'string') {
+    return children;
+  }
+  if (Array.isArray(children)) {
+    return children
+      .map(child => {
+        if (typeof child === 'string') {
+          return child;
+        }
+        if (child?.props?.children) {
+          return extractCodeText(child.props.children);
+        }
+        if (React.isValidElement(child)) {
+          // 如果是React元素，尝试获取其文本内容
+          return extractCodeText(child.props?.children || child);
+        }
+        return String(child || '');
+      })
+      .join('');
+  }
+  if (children?.props?.children) {
+    return extractCodeText(children.props.children);
+  }
+  return String(children || '');
+};
   // 计算总文档数
   const getTotalDocs = (navItems) => {
     let count = 0;
@@ -444,14 +488,8 @@ const Docs = ({ theme }) => {
               <small>文档中心</small>
             </div>
           </div>
-          <div className="d-flex align-items-center mt-2">
-            <Badge bg="light" text="dark" className="me-2">
-              {theme === 'dark' ? '🌙' : '☀️'}
-            </Badge>
-            <small>{theme === 'dark' ? '暗色主题' : '亮色主题'}</small>
-          </div>
         </Card.Header>
-        
+
         <Card.Body className="p-0 d-flex flex-column">
           {/* 搜索框 */}
           <div className="p-3 border-bottom">
@@ -465,15 +503,15 @@ const Docs = ({ theme }) => {
               />
             </InputGroup>
           </div>
-          
+
           {/* 文档统计 */}
           <div className="p-3 border-bottom d-flex justify-content-between text-muted small">
             <span>📚 共 {getTotalDocs(navigation)} 篇文档</span>
             <span>📊 最近更新</span>
           </div>
-          
+
           {/* 导航 */}
-          <div className="flex-grow-1" style={{ overflowY: 'auto'}}>
+          <div className="flex-grow-1" style={{ overflowY: 'auto' }}>
             <Nav className="flex-column p-3">
               {(searchQuery ? filteredNavigation : navigation).map(item => (
                 <NavItem
@@ -555,12 +593,12 @@ const Docs = ({ theme }) => {
                   {content}
                 </ReactMarkdown>
               </article>
-              
+
               <div className="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
                 <div>
                   <small className="text-muted">
                     发现错误？{' '}
-                    <a 
+                    <a
                       href={`https://github.com/qexed/qexed-doc/edit/main/public/docs/${currentDocPath}.md`}
                       target="_blank"
                       rel="noopener noreferrer"
