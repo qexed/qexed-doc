@@ -4,6 +4,7 @@ import YXNavbar from './baseui/yxnavbar';
 import YXFooter from './baseui/yxfooter';
 import Index from './page/index';
 import Page404 from './page/error/404';
+import Docs from './page/docs';
 import './App.css';
 
 function App() {
@@ -55,6 +56,8 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<Index theme={theme} />} />
+          <Route path="/docs" element={<Docs theme={theme} />} />
+          <Route path="/docs/*" element={<Docs theme={theme} />} />
           <Route path="*" element={<Page404 theme={theme} />} />
         </Routes>
       </main>

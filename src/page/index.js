@@ -288,7 +288,7 @@ const Index = () => {
                 <div className="version-badge">v{stats.version}</div>
               </h1>
 
-              <h2 className="h1 mb-4 text-light">下一代高性能</h2>
+              <h2 className="h1 mb-4 text-light">低性能</h2>
               <h3 className="h1 fw-bold mb-4 text-warning">Minecraft 服务器</h3>
 
               <p className="lead text-light mb-4 opacity-75" style={{ fontSize: '1.25rem' }}>

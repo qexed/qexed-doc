@@ -1,0 +1,208 @@
+/* 仅保留文档内容的样式，侧边栏样式已由 Bootstrap 处理 */
+
+/* 文档内容样式 */
+.docs-article {
+  line-height: 1.8;
+  color: var(--text-primary, #212529);
+}
+
+/* 标题样式 */
+.docs-article h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #212529);
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--primary, #0d6efd);
+}
+
+.docs-article h2 {
+  font-size: 2rem;
+  margin: 2.5rem 0 1.25rem 0;
+  font-weight: 600;
+  color: var(--text-primary, #212529);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color, #dee2e6);
+}
+
+.docs-article h3 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem 0;
+  font-weight: 600;
+  color: var(--text-primary, #212529);
+}
+
+.docs-article h4 {
+  font-size: 1.25rem;
+  margin: 1.5rem 0 0.75rem 0;
+  font-weight: 600;
+  color: var(--text-primary, #212529);
+}
+
+/* 段落和文本 */
+.docs-article p {
+  margin-bottom: 1.25rem;
+  color: var(--text-primary, #495057);
+}
+
+.docs-article strong {
+  font-weight: 600;
+  color: var(--text-primary, #212529);
+}
+
+.docs-article em {
+  color: var(--text-secondary, #6c757d);
+  font-style: italic;
+}
+
+/* 列表样式 */
+.docs-article ul, .docs-article ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.docs-article li {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary, #495057);
+}
+
+.docs-article ul li {
+  list-style-type: disc;
+}
+
+.docs-article ol li {
+  list-style-type: decimal;
+}
+
+/* 引用块 */
+.docs-article blockquote {
+  border-left: 4px solid var(--primary, #0d6efd);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background: var(--blockquote-bg, #f8f9fa);
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+}
+
+.docs-article blockquote p {
+  margin-bottom: 0;
+  color: var(--text-secondary, #6c757d);
+}
+
+/* 表格样式 */
+.docs-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.docs-article th, .docs-article td {
+  border: 1px solid var(--border-color, #dee2e6);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.docs-article th {
+  background: var(--table-header-bg, #f8f9fa);
+  font-weight: 600;
+  color: var(--text-primary, #212529);
+}
+
+.docs-article tr:nth-child(even) {
+  background: var(--table-even-bg, #fdfdfd);
+}
+
+/* 代码样式 */
+.docs-article code:not(pre code) {
+  background: var(--code-inline-bg, #f1f3f4);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: var(--code-inline-color, #e83e8c);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.docs-article pre {
+  background: var(--pre-bg, #f8f9fa);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--pre-border, #e9ecef);
+}
+
+.docs-article pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* 链接样式 */
+.docs-article a {
+  color: var(--link-color, #0d6efd);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.docs-article a:hover {
+  color: var(--link-hover-color, #0a58ca);
+  text-decoration: underline;
+}
+
+/* 图片样式 */
+.docs-article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-color, #e9ecef);
+}
+
+/* 暗色主题支持 */
+@media (prefers-color-scheme: dark) {
+  .docs-article {
+    color: #e9ecef;
+  }
+  
+  .docs-article h1, 
+  .docs-article h2, 
+  .docs-article h3, 
+  .docs-article h4 {
+    color: #e9ecef;
+  }
+  
+  .docs-article p,
+  .docs-article li {
+    color: #adb5bd;
+  }
+  
+  .docs-article code:not(pre code) {
+    background: #2a2e35;
+    color: #f783ac;
+  }
+  
+  .docs-article pre {
+    background: #1e1e1e;
+    border-color: #404040;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .docs-article h1 {
+    font-size: 2rem;
+  }
+  
+  .docs-article h2 {
+    font-size: 1.75rem;
+  }
+  
+  .docs-article h3 {
+    font-size: 1.5rem;
+  }
+}
