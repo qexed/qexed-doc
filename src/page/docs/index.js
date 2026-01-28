@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -42,42 +42,177 @@ const CustomLink = ({ href, children, ...props }) => {
   );
 };
 
+// 自定义图片组件，处理相对路径
+const CustomImage = ({ src, alt, title, ...props }) => {
+  const { '*': docPath } = useParams();
+  
+  // 处理图片路径
+  const processedSrc = useMemo(() => {
+    if (!src) return '';
+    
+    // 如果是绝对URL（http/https），直接返回
+    if (src.startsWith('http://') || src.startsWith('https://')) {
+      return src;
+    }
+    
+    // 如果是绝对路径（以/开头），添加PUBLIC_URL前缀
+    if (src.startsWith('/')) {
+      return `${process.env.PUBLIC_URL || ''}${src}`;
+    }
+    
+    // 相对路径：基于当前文档路径计算
+    if (docPath) {
+      // 获取当前文档所在目录
+      const lastSlashIndex = docPath.lastIndexOf('/');
+      const baseDir = lastSlashIndex >= 0 ? docPath.substring(0, lastSlashIndex + 1) : '';
+      
+      // 处理常见的相对路径情况
+      let resolvedPath = src;
+      
+      // 处理 ../ 上级目录
+      if (src.startsWith('../')) {
+        // 计算上级目录
+        const dirLevels = baseDir.split('/').filter(Boolean);
+        let upCount = 0;
+        let tempSrc = src;
+        
+        while (tempSrc.startsWith('../')) {
+          upCount++;
+          tempSrc = tempSrc.substring(3);
+        }
+        
+        if (dirLevels.length >= upCount) {
+          const newDir = dirLevels.slice(0, -upCount).join('/');
+          resolvedPath = `${newDir ? newDir + '/' : ''}${tempSrc}`;
+        } else {
+          // 如果超出了根目录，就放在根目录
+          resolvedPath = tempSrc;
+        }
+      } 
+      // 处理 ./ 当前目录
+      else if (src.startsWith('./')) {
+        resolvedPath = `${baseDir}${src.substring(2)}`;
+      }
+      // 处理不带 ./ 的相对路径
+      else {
+        resolvedPath = `${baseDir}${src}`;
+      }
+      
+      console.log(`图片路径处理: ${src} -> ${resolvedPath} (baseDir: ${baseDir})`);
+      
+      // 返回完整路径
+      return `${process.env.PUBLIC_URL || ''}/docs/${resolvedPath}`;
+    }
+    
+    // 如果没有文档路径，使用原始路径
+    return `${process.env.PUBLIC_URL || ''}/docs/${src}`;
+  }, [src, docPath]);
+  
+  return (
+    <img 
+      src={processedSrc} 
+      alt={alt || ''} 
+      title={title}
+      style={{ maxWidth: '100%', height: 'auto' }}
+      {...props}
+    />
+  );
+};
+
+// Mermaid 图表组件
+const MermaidDiagram = ({ chart, theme = 'default' }) => {
+  const diagramRef = useRef(null);
+  const [svgContent, setSvgContent] = useState('');
+  const [error, setError] = useState(null);
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    // 组件挂载时标记为已挂载
+    isMounted.current = true;
+    
+    const renderMermaid = async () => {
+      if (!chart || !diagramRef.current) return;
+      
+      try {
+        // 动态导入 mermaid
+        const mermaidModule = await import('mermaid');
+        const mermaid = mermaidModule.default;
+        
+        // 生成唯一 ID
+        const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+        
+        // 配置 mermaid
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: theme === 'dark' ? 'dark' : 'default',
+          flowchart: {
+            htmlLabels: true,
+            curve: 'linear'
+          },
+          securityLevel: 'loose'
+        });
+        
+        // 使用 mermaid.render 渲染 SVG
+        const { svg } = await mermaid.render(id, chart);
+        
+        if (isMounted.current) {
+          setSvgContent(svg);
+          setError(null);
+        }
+      } catch (err) {
+        if (isMounted.current) {
+          console.error('Mermaid 渲染失败:', err);
+          setError(err.message);
+        }
+      }
+    };
+    
+    renderMermaid();
+    
+    // 清理函数
+    return () => {
+      isMounted.current = false;
+    };
+  }, [chart, theme]);
+  
+  if (error) {
+    return (
+      <Alert variant="warning" className="my-3">
+        <Alert.Heading>Mermaid 图表渲染失败</Alert.Heading>
+        <pre className="bg-light p-3 rounded small">{chart}</pre>
+        <hr />
+        <p className="mb-0 text-muted">错误信息: {error}</p>
+      </Alert>
+    );
+  }
+  
+  return (
+    <div className="mermaid-diagram text-center my-4">
+      <div ref={diagramRef}>
+        {svgContent ? (
+          <div dangerouslySetInnerHTML={{ __html: svgContent }} />
+        ) : (
+          <div style={{ minHeight: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div className="text-muted">
+              <Spinner animation="border" size="sm" className="me-2" />
+              正在渲染图表...
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // 导航项组件
 const NavItem = ({ item, currentDocPath, level = 0 }) => {
   const [isExpanded, setIsExpanded] = useState(level < 2);
   
   const hasChildren = item.children && item.children.length > 0;
   const isActive = currentDocPath === item.path;
-  
-  // 根据层级获取不同的图标
+
   const getIcon = () => {
-    if (level === 0) {
-      return '📂';
-    } else if (level === 1 && hasChildren) {
-      return '📁';
-    } else if (hasChildren) {
-      return '📄';
-    } else {
-      if (item.title.includes('配置')) {
-        return '⚙️';
-      } else if (item.title.includes('命令')) {
-        return '💻';
-      } else if (item.title.includes('API') || item.title.includes('接口')) {
-        return '🔌';
-      } else if (item.title.includes('部署') || item.title.includes('安装')) {
-        return '🚀';
-      } else if (item.title.includes('服务') || item.title.includes('服务器')) {
-        return '🖥️';
-      } else if (item.title.includes('聊天')) {
-        return '💬';
-      } else if (item.title.includes('状态')) {
-        return '📊';
-      } else if (item.title.includes('Ping') || item.title.includes('心跳')) {
-        return '💓';
-      } else {
-        return '📝';
-      }
-    }
+    return '📂'
   };
   
   return (
@@ -245,28 +380,30 @@ const Docs = ({ theme }) => {
     }
   }, [docPath, navLoading]);
 
-  // 代码高亮组件
-  const components = {
-    code({ node, inline, className, children, ...props }) {
-      const match = /language-(\w+)/.exec(className || '');
-      const language = match ? match[1] : '';
-      
-      return !inline && language ? (
-        <SyntaxHighlighter
-          style={vscDarkPlus}
-          language={language}
-          PreTag="div"
-          {...props}
-        >
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
-      ) : (
-        <code className={className} {...props}>
-          {children}
-        </code>
-      );
-    },
-    a: CustomLink
+  // 代码和 mermaid 图表组件
+  const CodeBlock = ({ node, inline, className, children, ...props }) => {
+    const match = /language-(\w+)/.exec(className || '');
+    const language = match ? match[1] : '';
+    
+    if (!inline && language === 'mermaid') {
+      const codeString = String(children).replace(/\n$/, '');
+      return <MermaidDiagram chart={codeString} theme={theme} />;
+    }
+    
+    return !inline && language ? (
+      <SyntaxHighlighter
+        style={vscDarkPlus}
+        language={language}
+        PreTag="div"
+        {...props}
+      >
+        {String(children).replace(/\n$/, '')}
+      </SyntaxHighlighter>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
   };
 
   // 计算总文档数
@@ -336,7 +473,7 @@ const Docs = ({ theme }) => {
           </div>
           
           {/* 导航 */}
-          <div className="flex-grow-1" style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 300px)' }}>
+          <div className="flex-grow-1" style={{ overflowY: 'auto'}}>
             <Nav className="flex-column p-3">
               {(searchQuery ? filteredNavigation : navigation).map(item => (
                 <NavItem
@@ -407,7 +544,11 @@ const Docs = ({ theme }) => {
             <Card.Body>
               <article className="docs-article">
                 <ReactMarkdown
-                  components={components}
+                  components={{
+                    code: CodeBlock,
+                    a: CustomLink,
+                    img: CustomImage
+                  }}
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeHighlight]}
                 >

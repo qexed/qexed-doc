@@ -36,7 +36,7 @@
   font-size: 1.25rem;
   margin: 1.5rem 0 0.75rem 0;
   font-weight: 600;
-  color: var(--text-primary, #212529);
+  color: var(--text-primary, #a1afbd);
 }
 
 /* 段落和文本 */
@@ -47,7 +47,7 @@
 
 .docs-article strong {
   font-weight: 600;
-  color: var(--text-primary, #212529);
+  color: var(--text-primary, #a1afbd);
 }
 
 .docs-article em {
@@ -79,7 +79,7 @@
   border-left: 4px solid var(--primary, #0d6efd);
   padding: 1rem 1.5rem;
   margin: 1.5rem 0;
-  background: var(--blockquote-bg, #f8f9fa);
+  background: var(--blockquote-bg, rgb(0, 28, 56));
   border-radius: 0 6px 6px 0;
   font-style: italic;
 }
@@ -205,4 +205,39 @@
   .docs-article h3 {
     font-size: 1.5rem;
   }
+}
+
+/* mermaid 图表样式 */
+.mermaid-diagram {
+  overflow-x: auto;
+  margin: 2rem 0;
+  padding: 1rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+/* 暗色主题适配 */
+[data-theme="dark"] .mermaid-diagram,
+.dark .mermaid-diagram {
+  background-color: #2d3748;
+  border-color: #4a5568;
+}
+
+/* mermaid 图表中的文字 */
+.mermaid-diagram text {
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .mermaid-diagram {
+    padding: 0.5rem;
+  }
+}
+
+/* 代码块样式 */
+pre {
+  max-height: 500px;
+  overflow-y: auto;
 }
