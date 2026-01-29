@@ -78,7 +78,7 @@ const Index = () => {
   // 从 Minecraft 服务器获取真实状态（使用 Server List Ping 协议）
   const fetchServerStatus = async () => {
     try {
-      const response = await fetch(`https://api.mcsrvstat.us/3/mc_server.qexed.com`);
+      const response = await fetch(`https://api.mcsrvstat.us/3/mc_server.qexed.com:25565`);
       const data = await response.json();
 
       if (data.online) {
