@@ -75,20 +75,10 @@ const Index = () => {
   };
 
 
-  // 从 mc_server.mcppl.com 获取服务器状态
   // 从 Minecraft 服务器获取真实状态（使用 Server List Ping 协议）
   const fetchServerStatus = async () => {
     try {
-      // 使用 WebSocket 或通过代理后端来 ping Minecraft 服务器
-      // 由于浏览器的同源策略，我们不能直接从前端连接 Minecraft 服务器的 TCP 端口
-      // 这里我们通过一个代理 API 来获取服务器状态
-
-      // 方案1: 如果有一个后端 API 可以代理 Minecraft ping
-      // const response = await fetch('/api/server-status?host=mc_server.mcppl.com&port=25565');
-      // const data = await response.json();
-
-      // 方案2: 使用现有的第三方 Minecraft 状态查询 API
-      const response = await fetch(`https://api.mcsrvstat.us/3/mc_server.mcppl.com`);
+      const response = await fetch(`https://api.mcsrvstat.us/3/mc_server.qexed.com`);
       const data = await response.json();
 
       if (data.online) {
