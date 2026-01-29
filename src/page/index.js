@@ -129,7 +129,7 @@ const Index = () => {
 
       // 如果 API 调用失败，尝试备用 API
       try {
-        const backupResponse = await fetch(`https://api.minetools.eu/ping/mc_server.mcppl.com/25565`);
+        const backupResponse = await fetch(`https://api.minetools.eu/ping/mc_server.qexed.com/25565`);
         const backupData = await backupResponse.json();
 
         if (backupData && !backupData.error) {
