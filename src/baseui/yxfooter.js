@@ -102,7 +102,7 @@ const YXFooter = ({ theme, style }) => {
               e.target.style.color = colors.primary;
             }}
           >
-            ICP备案号: 审核中
+            ICP备案号: <a href="https://beian.miit.gov.cn/">苏ICP备2026006589号-1</a>
           </a>
         </Col>
 
