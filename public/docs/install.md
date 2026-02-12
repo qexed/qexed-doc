@@ -11,5 +11,9 @@
 ## 从源码安装
 1. 安装 Rust (最新版即可)
 2. 安装 Git(或者直接下载源码)
-3. 执行 Cargo build
-4. 找到 target 目录中的 qexed.exe 或 qexed 文件并运行
+3. 安装 make
+> 注: windows: winget install GnuWin32.Make
+4. 安装 openssh
+5. 执行 make build
+6. 找到 target 目录中的 qexed.exe 或 qexed 文件并运行
+

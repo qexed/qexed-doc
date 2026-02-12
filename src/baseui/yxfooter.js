@@ -41,7 +41,7 @@ const YXFooter = ({ theme, style }) => {
         {/*公安备案 */}
         <Col xs={12} md="auto" className="text-center">
           <a 
-            href="https://beian.mps.gov.cn/#/query/webSearch?code=还没搞"
+            href="https://beian.mps.gov.cn/#/query/webSearch?code=32070502011302"
             className="icp-link text-decoration-none"
             style={{
               color: colors.primary,
@@ -66,7 +66,7 @@ const YXFooter = ({ theme, style }) => {
 
               }}
             />
-            公安备案: 还没搞
+            公安备案: 苏公网安备32070502011302号
           </a>
         </Col>
         {/* 分隔符 */}
